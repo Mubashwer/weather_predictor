@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513145034) do
+ActiveRecord::Schema.define(version: 20150513170034) do
 
   create_table "locations", force: true do |t|
     t.string   "name"
+    t.string   "station_id"
     t.float    "lat"
     t.float    "lon"
     t.datetime "created_at"

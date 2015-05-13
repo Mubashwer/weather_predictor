@@ -1,0 +1,21 @@
+<h1>Locations</h1>
+
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>LATITUDE</th>
+        <th>LONGITUDE</th>
+        <th>LAST_UPDATE</th>
+    </tr>
+
+    <% Location.all.each do |loc| %>
+    <tr>
+        <td><%= loc.station_id %></td>
+        <td><%= loc.name %></td>
+        <td><%= loc.lat %></td>
+        <td><%= loc.lon %></td>
+        <td><%= loc.last_update.strftime("%H:%M%P %d-%m-%Y") %></td>>
+    </tr>
+    <% end %>
+</table>

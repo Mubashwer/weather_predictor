@@ -1,0 +1,9 @@
+{
+  "date": "<%= Time.now.strftime("%d-%m-%Y") %>",
+  "locations": [
+<% Location.all.each do |loc| %>
+<%= JSON.pretty_generate(loc.as_json).gsub(/^/, '    ').html_safe %><%= if loc != Location.last then ',' end %>
+<% end %>
+  ]
+}
+
