@@ -1,9 +1,5 @@
 {
   "date": "<%= Time.now.strftime("%d-%m-%Y") %>",
-  "locations": [
-<% Location.all.each do |loc| %>
-<%= JSON.pretty_generate(loc.as_json).gsub(/^/, '    ').html_safe %><%= if loc != Location.last then ',' end %>
-<% end %>
-  ]
+  "locations":<%= JSON.pretty_generate(Location.all.as_json).gsub(/^/, '  ')[1..-1].html_safe%>
 }
 
