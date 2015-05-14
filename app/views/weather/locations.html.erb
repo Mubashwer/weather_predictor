@@ -6,6 +6,7 @@
         <th>NAME</th>
         <th>LATITUDE</th>
         <th>LONGITUDE</th>
+        <th>POSTCODE</th>
         <th>LAST_UPDATE</th>
     </tr>
 
@@ -15,6 +16,7 @@
         <td><%= loc.name %></td>
         <td><%= loc.lat %></td>
         <td><%= loc.lon %></td>
+        <td><%= loc.postcode %></td>
         <td><%= loc.last_update.strftime("%H:%M%P %d-%m-%Y") %></td>>
     </tr>
     <% end %>
