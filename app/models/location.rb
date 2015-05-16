@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+    has_many :observations
+    
     def as_json(options ={})
         my_hash = {"id" => station_id, "lat" => lat.to_s,
                    "lon" => lon.to_s,

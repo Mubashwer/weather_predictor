@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  condition: MyString
+  unix_time: 1
+  location_id: 
+
+two:
+  condition: MyString
+  unix_time: 1
+  location_id: 

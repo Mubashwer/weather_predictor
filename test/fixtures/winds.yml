@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  speed: 1.5
+  bearing: 1
+  observation_id: 
+
+two:
+  speed: 1.5
+  bearing: 1
+  observation_id: 
