@@ -1,0 +1,6 @@
+{
+  "date": "<%= Time.now.strftime("%d-%m-%Y") %>",
+  "current_temp": <%= raw @current_weather["current_temp"] %>,
+  "current_cond": <%= raw @current_weather["current_weather"] %>,
+  "measurements": <%= JSON.pretty_generate(Observation.where("unix_time >= :unix_time_start AND unix_time <= :unix_time_end AND location_id = :observation_location", unix_time_start: params["date"].to_time.to_i, unix_time_end: (params["date"].to_time + 1.day).to_i, observation_location: @location.id).as_json).gsub(/^/, '  ')[1..-1].html_safe %>
+}
