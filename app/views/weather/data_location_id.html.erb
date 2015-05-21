@@ -1,0 +1,41 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title" style="display: inline;"><%= @location.name %></h3>
+    <a href="/" class="btn btn-default btn-xs pull-right">Back</a>
+  </div>
+  <div class="panel-body">
+    <div id="summary-measurement" class="well">
+      <strong>date</strong>: <%= current_date %><br />
+      <strong>current_temp</strong>: <%= @current_weather["current_temp"][1...-1] %><br />
+      <strong>current_cond</strong>: <%= @current_weather["current_cond"][1...-1]  %><br />
+      <strong>id</strong>: <%= @location.station_id %><br />
+      <strong>lat</strong>: <%= @location.lat %><br />
+      <strong>lon</strong>: <%= @location.lon %><br />
+      <strong>last_update</strong>: <%= @location.last_update.strftime("%H:%M%P %d-%m-%Y") %><br />
+    </div>
+    <strong>measurements:</strong>
+    <table id="table-measurements" class="table table-hover">
+      <thead>
+        <tr>
+          <th>time</th>
+          <th>temp</th>
+          <th>precip</th>
+          <th>wind_direction</th>
+          <th>wind_speed</th>
+        </tr>
+      </thead>
+
+      <tbody class="measurements">
+        <% @measurements.all.each do |obs| %>
+          <tr>
+            <td><%= Time.zone.at(obs.unix_time).strftime("%H:%M%P %d-%m-%Y") %></td>
+            <td><%= obs.temperature.temp %></td>
+            <td><%= obs.rainfall.intensity.round(2) %></td>
+            <td><%= Wind.bearing_to_cardinal(obs.wind.bearing) %></td>
+            <td><%= obs.wind.speed %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

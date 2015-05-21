@@ -49,17 +49,17 @@ class Regression
     end
 
     # Performs the polynomial [and linear] regression
-    def self.polynomial_regression(x_data, y_data, x)
+    def self.polynomial_regression(x_data, y_data, x_array)
         model = find_polynomial_model(x_data, y_data, MIN_ORDER, MAX_ORDER)
         r2 = model[:r2]
         model = model[:eq]
-        value = find_predicted_values([x],model)[0]
+        value = find_predicted_values(x_array,model)
         return {value: value, r2: r2}
     end
 
 
     # Performs the logarithmic regression
-    def self.logarithmic_regression(x_data, y_data, x)
+    def self.logarithmic_regression(x_data, y_data, x_array)
         # y = a*ln(x) + b; trasform x-data for logarithmic regression
         begin 
             ln_x_data = x_data.map{|i| Math.log(i)}
@@ -70,12 +70,12 @@ class Regression
 
         model = regress(ln_x_data, y_data, 1)
         r2 = give_r_squared(y_data, find_predicted_values(ln_x_data, model))
-        value = find_predicted_values([Math.log(x)],model)[0]
+        value = find_predicted_values(x_array.map{|i| Math.log(i)},model)
         return {value: value, r2: r2} 
     end
 
     # Performs the exponential regression
-    def self.exponential_regression(x_data, y_data, x)
+    def self.exponential_regression(x_data, y_data, x_array)
         # y = a*e^bx => ln(y) = b*x + log(a); transform y-data for exp. reg.
         begin 
             ln_y_data = y_data.map{|y| Math.log(y)}
@@ -85,17 +85,21 @@ class Regression
         end
         model = regress(x_data, ln_y_data, 1)
         r2 = give_r_squared(ln_y_data, find_predicted_values(x_data, model))
-        value = Math.exp(find_predicted_values([x],model)[0])
+        value = find_predicted_values(x_array,model).map{|i| Math.exp(i)}
         return {value: value, r2: r2}
     end
 
     # Performs various regression and returns the value with the
     # best-fit equation for given x, and the r-squared
-    def self.get_value(x_data, y_data, x)
+    def self.get_value(x_data, y_data, x_array)
+        if(!x_data.any? or !y_data.any? or !x_array.any? or x_data.count != y_data.count or x_data.count < 2)
+            return {value: nil, r2: nil}
+        end
+
         r2 = nil; value = nil
-        results = [polynomial_regression(x_data, y_data, x),\
-                  exponential_regression(x_data, y_data, x),\
-                  logarithmic_regression(x_data, y_data, x)\
+        results = [polynomial_regression(x_data, y_data, x_array),\
+                  exponential_regression(x_data, y_data, x_array),\
+                  logarithmic_regression(x_data, y_data, x_array)\
                  ]
         results.each do |result|
             if result and result[:r2] and (r2.nil? or result[:r2] > r2) and result[:value]

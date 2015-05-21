@@ -1,5 +1,4 @@
 {
-  "date": "<%= Time.now.strftime("%d-%m-%Y") %>",
+  "date": "<%= current_date %>",
   "locations":<%= JSON.pretty_generate(Location.all.as_json).gsub(/^/, '  ')[1..-1].html_safe%>
 }
-

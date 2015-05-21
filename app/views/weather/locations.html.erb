@@ -1,23 +1,34 @@
-<h1>Locations</h1>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title" style="display: inline;">Locations</h3>
+    <a href="/" class="btn btn-default btn-xs pull-right">Back</a>
+  </div>
+  <div class="panel-body">
+  <div id="date" class="well"><strong>date</strong>: <%= current_date %></div>
+    <table id="table-locations" class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>LATITUDE</th>
+          <th>LONGITUDE</th>
+          <th>POSTCODE </th>
+          <th>LAST_UPDATE</th>
+        </tr>
+      </thead>
 
-<table class="table table-hover">
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>LATITUDE</th>
-        <th>LONGITUDE</th>
-        <th>POSTCODE</th>
-        <th>LAST_UPDATE</th>
-    </tr>
-
-    <% Location.all.each do |loc| %>
-    <tr>
-        <td><%= loc.station_id %></td>
-        <td><%= loc.name %></td>
-        <td><%= loc.lat %></td>
-        <td><%= loc.lon %></td>
-        <td><%= loc.postcode %></td>
-        <td><%= loc.last_update.strftime("%H:%M%P %d-%m-%Y") %></td>>
-    </tr>
-    <% end %>
-</table>
+      <tbody class="locations">
+        <% @locations.each do |loc| %>
+          <tr id="<%= loc.station_id.downcase.gsub("_", "-") %>" class="location">
+            <td><%= loc.station_id %></td>
+            <td><%= loc.name %></td>
+            <td><%= loc.lat %></td>
+            <td><%= loc.lon %></td>
+            <td><%= loc.postcode %></td>
+            <td><%= loc.last_update.strftime("%H:%M%P %d-%m-%Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

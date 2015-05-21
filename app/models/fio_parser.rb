@@ -5,7 +5,7 @@ class Fio_parser
     
     API_KEYS = ['1c51183d2b5f1519197199775b62a651','fb5456e612f49314454654915f6e14f1',
                 '15d60298255e2dfb97ecc14171b1a16f' ,'ed7d0fa03028192be9cf229b52c67443', 
-                '4b37bddfe271d073ec33ef6678638dc1S','f3ede70cbe79415dea74ed6005f68046',
+                '4b37bddfe271d073ec33ef6678638dc1','f3ede70cbe79415dea74ed6005f68046',
                 'ad69b53afdb626dcbd4f8ec76c06d775', '50734796b20e6ef4dbbdccc85ca32b81',
                 '00f4102070a186375bdd50ca41656fab','697c52379297ff535f004dffc346849a',
                 'c5b96b8019dc0eb9a7abca294435d6d7', '6250efcf0b6f2faead2be6305932383f',
@@ -31,6 +31,7 @@ class Fio_parser
             obs.create_wind(speed: data["windSpeed"], bearing: data["windBearing"], unix_time: data["time"])
             obs.create_temperature(temp: data["temperature"], unix_time: data["time"])
             loc.last_update = Time.now.to_datetime
+            loc.save
         end
     end
 
