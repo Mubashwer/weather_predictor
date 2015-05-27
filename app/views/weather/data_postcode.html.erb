@@ -4,11 +4,9 @@
     <a href="/" class="btn btn-default btn-xs pull-right">Back</a>
   </div>
   <div class="panel-body">
-    <div id="locations" class="btn-group-vertical">
-      <% @locations.each do |loc| %>
-        <% url = "/weather/data/#{loc.station_id}/#{@date}.html" %>
-        <a href=<%= url %> class="btn btn-info"><strong><%= loc.station_id %>:</strong> <%= loc.name %></a><br />
-      <% end %>
-    </div>
+    <% @locations.each do |loc| %>
+      <% url = "/weather/data/#{loc.station_id}/#{@date}.html" %>
+      <a href=<%= url %> class="btn btn-info btn-block"><strong><%= loc.station_id %>:</strong> <%= loc.name %></a>
+    <% end %>
   </div>
 </div>

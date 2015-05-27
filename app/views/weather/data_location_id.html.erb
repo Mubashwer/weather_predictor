@@ -6,8 +6,8 @@
   <div class="panel-body">
     <div id="summary-measurement" class="well">
       <strong>date</strong>: <%= current_date %><br />
-      <strong>current_temp</strong>: <%= @current_weather["current_temp"][1...-1] %><br />
-      <strong>current_cond</strong>: <%= @current_weather["current_cond"][1...-1]  %><br />
+      <strong>current_temp</strong>: <%= @current_weather["current_temp"] %><br />
+      <strong>current_cond</strong>: <%= @current_weather["current_cond"]  %><br />
       <strong>id</strong>: <%= @location.station_id %><br />
       <strong>lat</strong>: <%= @location.lat %><br />
       <strong>lon</strong>: <%= @location.lon %><br />

@@ -4,65 +4,87 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-12"><a href="weather/locations.html" class="btn btn-info">HTML</a>
-                             <a href="weather/locations" class="btn btn-info">JSON</a></div>
+      <div class="buttons col-xs-12">
+        <a href="weather/locations.html" class="btn btn-info">HTML</a>
+        <a href="weather/locations" class="btn btn-info">JSON</a>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="data-station" class="panel panel-primary">
+<div id="stations" class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Data for Station</h3>
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-6  col-sm-4"><strong>id</strong><%= select_tag "location", options_from_collection_for_select(Location.all, "station_id", "station_id"), { class: "form-control" } %></div>
-      <div class="col-xs-6  col-sm-4"><strong>date</strong><input class="form-control" name="date_loc" type="text" value=<%= raw '"' + current_date + '"'%>></div><br/>
-      <div class="col-xs-12 col-sm-4"><a href="#" onclick="location_data('.html')" class="btn btn-info">HTML</a>
-                                      <a href="#" onclick="location_data('')" class="btn btn-info">JSON</a></div>
+      <div class="fields col-xs-12 col-sm-9 col-lg-10">
+        <div class="col-xs-6"><strong>id</strong><%= select_tag "location", options_from_collection_for_select(Location.all, "station_id", "station_id"), { class: "form-control" } %></div>
+        <div class="col-xs-6"><strong>date</strong><input class="form-control" name="date_loc" type="text" value=<%= raw '"' + current_date + '"'%>></div>
+      </div>
+      <div class="buttons col-xs-12 col-sm-3 col-lg-2">
+        <br>
+        <a href="#" onclick="location_data('.html')" class="btn btn-info">HTML</a>
+        <a href="#" onclick="location_data('')" class="btn btn-info">JSON</a>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="data-postcode" class="panel panel-primary">
+<div id="postcodes" class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Data for Victorian Postcode</h3>
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-6  col-sm-4"><strong>postcode</strong><input class="form-control" name="postcode" type="text" value="3000"></div>
-      <div class="col-xs-6  col-sm-4"><strong>date</strong><input class="form-control" name="date_postcode" type="text" value=<%= raw '"' + current_date + '"'%>></div><br/>
-      <div class="col-xs-12 col-sm-4"><a href="#" onclick="postcode_data('.html')" class="btn btn-info">HTML</a>
-                                      <a href="#" onclick="postcode_data('')" class="btn btn-info">JSON</a></div>
+      <div class="fields col-xs-12 col-sm-9 col-lg-10">
+        <div class="col-xs-6"><strong>postcode</strong><input class="form-control" name="postcode" type="text" value="3000"></div>
+        <div class="col-xs-6"><strong>date</strong><input class="form-control" name="date_postcode" type="text" value=<%= raw '"' + current_date + '"'%>></div>
+      </div>
+      <div class="buttons col-xs-12 col-sm-3 col-lg-2">
+        <br>
+        <a href="#" onclick="postcode_data('.html')" class="btn btn-info">HTML</a>
+        <a href="#" onclick="postcode_data('')" class="btn btn-info">JSON</a>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="data-postcode" class="panel panel-primary">
+<div id="predictions-lat-long" class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Hyperlocal Prediction (Lattitude and Longitude)</h3>
+    <h3 class="panel-title">Hyperlocal Prediction (Latitude and Longitude)</h3>
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-6  col-sm-4"><strong>latitude</strong><input class="form-control" name="lat" type="text" value="-37.8180"></div>
-      <div class="col-xs-6  col-sm-4"><strong>longitude</strong><input class="form-control" name="lon" type="text" value="144.9760"></div>
-      <div class="col-xs-6  col-sm-4"><strong>period</strong><%= select_tag "period_ll", options_for_select([10,30,60,120,180],10), { class: "form-control" } %></div><br/>
-      <div class="col-xs-12 col-sm-4"><a href="#" onclick="ll_prediction('.html')" class="btn btn-info">HTML</a>
-                                      <a href="#" onclick="ll_prediction('')" class="btn btn-info">JSON</a></div>
+      <div class="fields col-xs-12 col-sm-9 col-lg-10">
+        <div class="col-xs-4"><strong>latitude</strong><input class="form-control" name="lat" type="text" value="-37.8180"></div>
+        <div class="col-xs-4"><strong>longitude</strong><input class="form-control" name="lon" type="text" value="144.9760"></div>
+        <div class="col-xs-4"><strong>period</strong><%= select_tag "period_ll", options_for_select([10,30,60,120,180],10), { class: "form-control" } %></div>
+      </div>
+      <div class="buttons col-xs-12 col-sm-3 col-lg-2">
+        <br>
+        <a href="#" onclick="ll_prediction('.html')" class="btn btn-info">HTML</a>
+        <a href="#" onclick="ll_prediction('')" class="btn btn-info">JSON</a>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="data-postcode" class="panel panel-primary">
+<div id="predictions-postcode" class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Hyperlocal Prediction (Victorian Postcode)</h3>
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-6  col-sm-4"><strong>postcode</strong><input class="form-control" name="postcode_prediction" type="text" value="3000"></div>
-      <div class="col-xs-6  col-sm-4"><strong>period</strong><%= select_tag "period_postcode", options_for_select([10,30,60,120,180],10), { class: "form-control" } %></div><br/>
-      <div class="col-xs-12 col-sm-4"><a href="#" onclick="postcode_prediction('.html')" class="btn btn-info">HTML</a>
-                                      <a href="#" onclick="postcode_prediction('')" class="btn btn-info">JSON</a></div>
+      <div class="fields col-xs-12 col-sm-9 col-lg-10">
+        <div class="col-xs-6"><strong>postcode</strong><input class="form-control" name="postcode_prediction" type="text" value="3000"></div>
+        <div class="col-xs-6"><strong>period</strong><%= select_tag "period_postcode", options_for_select([10,30,60,120,180],10), { class: "form-control" } %></div>
+      </div>
+      <div class="buttons col-xs-12 col-sm-3 col-lg-2">
+        <br>
+        <a href="#" onclick="postcode_prediction('.html')" class="btn btn-info">HTML</a>
+        <a href="#" onclick="postcode_prediction('')" class="btn btn-info">JSON</a>
+      </div>
     </div>
   </div>
 </div>

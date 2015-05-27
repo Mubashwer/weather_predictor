@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   scope '/weather' do
-	get 'locations', to: 'weather#locations', defaults: {format: :json}
+	get 'locations', to: 'weather#locations', as: :locations, defaults: {format: :json}
 	get 'data/:postcode/:date', constraints: {postcode: /3[0-9]{3}/.freeze}, to: 'weather#data_postcode', defaults: {format: :json}
 	get 'data/:location_id/:date', to: 'weather#data_location_id', constraints: {postcode: /3[0-9]{3}/.freeze}, defaults: {format: :json}
 	get 'prediction/:lat/:long/:period', to: 'weather#prediction', constraints: {lat: /-?\d+(.\d+)?/.freeze, long: /-?\d+(.\d+)?/.freeze},defaults: {format: :json}

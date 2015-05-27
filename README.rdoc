@@ -1,28 +1,23 @@
-== README
+== README 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Group: 41 
+Grady Fitzpatrick (gradyf, 575753) 
+Mubashwer Salman Khurshid (mskh, 601738) 
+Geordie Wicks (gwicks, 185828) 
+Harry Pui Lam Wong (harryw1, 637802) 
+ 
+* Steps to start the app 
 
-Things you may want to cover:
+rake db:reset or rake db:setup  
+whenever -i  
+rails s  
 
-* Ruby version
+For predictions, at least two sets of data are needed so please wait  
+for about 30 minutes or execute "rake parse" twice. 
 
-* System dependencies
+visit localhost:3000 for web interface  
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
+our API is also hosted at http://128.199.226.9/ 
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.

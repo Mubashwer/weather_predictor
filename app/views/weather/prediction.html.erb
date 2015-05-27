@@ -1,1 +1,62 @@
-<% console %>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title" style="display: inline;">Hyperlocal Predictions</h3>
+    <a href="/" class="btn btn-default btn-xs pull-right">Back</a>
+  </div>
+  <div class="panel-body">
+    <div id="predictions" class="well">
+      <% if params.has_key? ("postcode") %>
+      <strong>postcode: </strong><%= params["postcode"] %>
+      <% end %>
+      <% if params.has_key? ("lat") %>
+      <strong>lat: </strong><%= params["lat"] %>
+      <% end %><br />
+      <% if params.has_key? ("long") %>
+      <strong>long: </strong><%= params["long"] %> 
+      <% end %>
+    </div>
+
+    <strong>predictions:</strong>
+    <table id="predictions" class="table table-hover">
+      <thead>
+        <tr>
+          <th>period</th>
+          <th>rain</th>
+          <th></th>
+          <th>temp</th>
+          <th></th>
+          <th>wind_speed</th>
+          <th></th>
+          <th>wind_direction</th>
+          <th></th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>value</th>
+          <th>probability</th>
+          <th>value</th>
+          <th>probability</th>
+          <th>value</th>
+          <th>probability</th>
+          <th>value</th>
+          <th>probability</th>
+        </tr>
+      </thead>
+      <tbody class="predictions">
+        <% @periods.each do |period| %>
+          <tr>
+            <td> <%= period %> </td>
+            <td> <%= @predictions[period.to_s]["rain"]["value"] %> </td>
+            <td> <%= @predictions[period.to_s]["rain"]["probability"] %> </td>
+            <td> <%= @predictions[period.to_s]["temp"]["value"] %> </td>
+            <td> <%= @predictions[period.to_s]["temp"]["probability"] %> </td>
+            <td> <%= @predictions[period.to_s]["wind_speed"]["value"] %> </td>
+            <td> <%= @predictions[period.to_s]["wind_speed"]["probability"] %> </td>
+            <td> <%= @predictions[period.to_s]["wind_direction"]["value"] %> </td>
+            <td> <%= @predictions[period.to_s]["wind_direction"]["probability"] %> </td>
+          </tr>  
+        <% end %> 
+      </tbody>
+    </table>
+  </div>
+</div>

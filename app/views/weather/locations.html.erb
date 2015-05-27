@@ -14,6 +14,7 @@
           <th>LONGITUDE</th>
           <th>POSTCODE </th>
           <th>LAST_UPDATE</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -26,6 +27,8 @@
             <td><%= loc.lon %></td>
             <td><%= loc.postcode %></td>
             <td><%= loc.last_update.strftime("%H:%M%P %d-%m-%Y") %></td>
+            <!-- Button version: <td><a href="/weather/data/<%= loc.station_id %>/<%= loc.last_update.strftime("%d-%m-%Y") %>.html" class="btn btn-default btn-xs">Latest data</a></td>-->
+            <td><a href="/weather/data/<%= loc.station_id %>/<%= loc.last_update.strftime("%d-%m-%Y") %>.html">Latest data</a></td>
           </tr>
         <% end %>
       </tbody>

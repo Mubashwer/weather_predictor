@@ -1,7 +1,7 @@
 {
-  <% if params.has_key? ("postcode") %>"postcode":"<%= params["postcode"] %>" <% end %><% if params.has_key? ("lat") 
-  %>"lat":"<%= params["lat"] %>" <% end %><% if params.has_key? ("long") %>
-  "long":"<%= params["long"] %>" <% end %>
+  <% if params.has_key? ("postcode") %>"postcode":"<%= params["postcode"] %>", <% end %><% if params.has_key? ("lat") 
+  %>"lat":"<%= params["lat"] %>", <% end %><% if params.has_key? ("long") %>
+  "long":"<%= params["long"] %>", <% end %>
   "predictions":<%= JSON.pretty_generate(@predictions).gsub(/^/, '  ')[1..-1].html_safe %>
   
 }
