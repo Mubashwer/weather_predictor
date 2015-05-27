@@ -112,8 +112,3 @@ locs = [
 ]
 
 locations = Location.create(locs)
-
-Location.all.each do |x|
-	x.last_update = x.updated_at
-	x.save
-end

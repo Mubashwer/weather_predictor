@@ -25,7 +25,7 @@ class Prediction
         lower_bound = Time.zone.now - 30.minutes
         loc_ids = []; distances = []
         locations.each do |loc, i|
-            if loc[:loc].last_update > lower_bound
+            if !loc[:loc].last_update.nil? and loc[:loc].last_update > lower_bound
                 loc_ids << loc[:id]
                 distances << loc[:distance]
             end
@@ -36,6 +36,7 @@ class Prediction
             values = []
             loc_ids.each do |lid|
                 obs = Observation.where(location_id: lid).last
+                return if obs.nil?
                 values << obs.rainfall.intensity if (m == "rain")
                 values << obs.temperature.temp if (m == "temp")
                 values << obs.wind.speed if (m == "wind_speed")

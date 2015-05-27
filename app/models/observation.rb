@@ -9,7 +9,7 @@ class Observation < ActiveRecord::Base
     
     lower_bound = Time.zone.now - 30.minutes
     obs = Observation.where(location_id: location.id).last
-    if location.last_update > lower_bound
+    if !location.last_update.nil? and location.last_update > lower_bound and obs != nil
         return {"current_cond"=>('"' + obs.condition.to_s + '"'), "current_temp"=>'"' + obs.temperature.temp.to_s + '"'}
     else
         return {"current_cond"=>"null", "current_temp"=>"null"}
@@ -56,7 +56,7 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
 
 #grady: ADD WIND TO p.data in this or separate function (RESOLVED)
   def self.get_predictions lat, long, period
-	
+  
     nearby_locations = Location.get_nearest_locs(lat, long)
     p = Prediction.new(period.to_i) #check initialize of Prediction
     p.set_current_weather(nearby_locations)
@@ -67,16 +67,21 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
     
     # presumes time at start of day is 1 second (otherwise the values are too large)
     times_hack = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - Time.zone.parse(p.data[x.to_s]["time"][8..-1])).to_i + 1}
-    
+    break_out = false;
     MEASUREMENTS.each do |m|
         data = {}; data[m] = {}
         distances = []
         nearby_locations[0..1].each_with_index do |loc, i|
+          if loc[:loc].last_update.nil?
+            break_out = true
+            break;
+          end
+          break if(break_out == true)
             # get data for each location (the data is hash with each period and r2)
             data[m][i] = Temperature.predict(Temperature.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "temp")
             data[m][i] = Rainfall.predict(Rainfall.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "rain")
-			data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_speed] if (m == "wind_speed") 
-			data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_direction] if (m == "wind_direction")
+      data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_speed] if (m == "wind_speed") 
+      data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_direction] if (m == "wind_direction")
             distances << loc[:distance] # distances array for aggregation
 
             # add the data values to array for aggregation
@@ -85,10 +90,10 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
                 p.data[per.to_s][m]["value"] << data[m][i][per] if data[m][i] 
             end
         end
-
+        break if(break_out == true)
         periods.each do |per|
             if p.data[per.to_s][m]["value"].compact.count != 2 # error checking
-                p.data[per.to_s][m]["value"] = "null"
+                p.data[per.to_s][m]["value"] = nil
                 next
             end
             agg = Observation.aggregate(p.data[per.to_s][m]["value"], distances).round(2) #aggregate data for each period

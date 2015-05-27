@@ -9,7 +9,8 @@ class Location < ActiveRecord::Base
   def as_json(options ={})
     my_hash = {"id" => station_id, "lat" => lat.to_s,
                "lon" => lon.to_s,
-               "last_update" => last_update.strftime("%H:%M%P %d-%m-%Y")}
+               "last_update" => nil}
+    my_hash["last_update"] = last_update.strftime("%H:%M%P %d-%m-%Y") if !last_update.nil?
     return my_hash
   end
 

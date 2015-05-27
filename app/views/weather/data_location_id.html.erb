@@ -11,7 +11,11 @@
       <strong>id</strong>: <%= @location.station_id %><br />
       <strong>lat</strong>: <%= @location.lat %><br />
       <strong>lon</strong>: <%= @location.lon %><br />
-      <strong>last_update</strong>: <%= @location.last_update.strftime("%H:%M%P %d-%m-%Y") %><br />
+      <% if @location.last_update %>
+        <strong>last_update</strong>: <%= @location.last_update.strftime("%H:%M%P %d-%m-%Y") %><br />
+      <% else %>
+        <strong>last_update</strong>: null<br />
+      <% end %>
     </div>
     <strong>measurements:</strong>
     <table id="table-measurements" class="table table-hover">
