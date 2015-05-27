@@ -7,8 +7,9 @@ Mubashwer Salman Khurshid (mskh, 601738)
 Geordie Wicks (gwicks, 185828)  
 Harry Pui Lam Wong (harryw1, 637802)  
  
-* Steps to start the app 
-
+* Steps to start the app  
+ 
+bundle install  
 rake db:setup or rake db:reset  
 whenever -i  
 rails s  

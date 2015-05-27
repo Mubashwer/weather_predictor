@@ -72,16 +72,22 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
         data = {}; data[m] = {}
         distances = []
         nearby_locations[0..1].each_with_index do |loc, i|
-          if loc[:loc].last_update.nil?
+          if loc[:loc].last_update.nil? # if there is no data then no regression
             break_out = true
             break;
           end
           break if(break_out == true)
+
+          	# if there are less than 2 records then no regression
+          	if Observation.where("location_id = ?",loc[:id]).last(REGRESSION_RECORDS).count < 2
+          		break_out = true
+          		break;
+          	end
             # get data for each location (the data is hash with each period and r2)
             data[m][i] = Temperature.predict(Temperature.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "temp")
             data[m][i] = Rainfall.predict(Rainfall.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "rain")
-      data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_speed] if (m == "wind_speed") 
-      data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_direction] if (m == "wind_direction")
+      		data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_speed] if (m == "wind_speed") 
+      		data[m][i] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods, m)[:wind_direction] if (m == "wind_direction")
             distances << loc[:distance] # distances array for aggregation
 
             # add the data values to array for aggregation
