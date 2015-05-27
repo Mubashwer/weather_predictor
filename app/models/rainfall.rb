@@ -8,7 +8,6 @@ class Rainfall < ActiveRecord::Base
   		epoch = rain_set.first.unix_time + 1
   		begin
   		predictions = Regression.get_value(rain_set.map{|r| r.unix_time - epoch}, rain_set.map{|r| r.intensity}, times)
-		puts predictions
   		rescue
   		predictions = nil
   		end

@@ -1,23 +1,24 @@
 == README 
 
-* Group: 41 
-Grady Fitzpatrick (gradyf, 575753) <br /> 
-Mubashwer Salman Khurshid (mskh, 601738) <br />
-Geordie Wicks (gwicks, 185828) <br />
-Harry Pui Lam Wong (harryw1, 637802) <br />
+* Group: 41  
+
+Grady Fitzpatrick (gradyf, 575753)   
+Mubashwer Salman Khurshid (mskh, 601738)  
+Geordie Wicks (gwicks, 185828)  
+Harry Pui Lam Wong (harryw1, 637802)  
  
 * Steps to start the app 
 
-rake db:setup or rake db:reset <br />
-whenever -i <br />
-rails s <br />
+rake db:setup or rake db:reset    
+whenever -i    
+rails s  
 
-For predictions, at least two sets of data are needed so please wait  <br />
-for about 30 minutes or execute "rake parse" twice.  <br />
+For predictions, at least two sets of data are needed so please wait  
+for about 30 minutes or execute "rake parse" twice.  
 
-visit localhost:3000 for web interface <br />
+visit localhost:3000 for web interface  
 
-our API is also hosted at http://128.199.226.9 <br /> 
+our API is also hosted at http://128.199.226.9  
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
