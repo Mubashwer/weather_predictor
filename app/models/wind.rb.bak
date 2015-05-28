@@ -52,14 +52,19 @@ class Wind < ActiveRecord::Base
 			time_hash[:wind_speed][:r2] = (predicted_x_strength[:r2]*(predicted_x_strength[:value][i]/x_y_sum_strength) + predicted_y_strength[:r2]*(predicted_y_strength[:value][i]/x_y_sum_strength))/2
 		end
 		rescue
-		puts "Failed normal prediction mode, returning useless regression"
 		periods.each do |p|
-			time_hash[:wind_direction][p.to_s] = {}
-			time_hash[:wind_speed][p.to_s] = {}
-			time_hash[:wind_direction][p.to_s][:value] = 0
-			time_hash[:wind_direction][p.to_s][:r2] = 0.0
-			time_hash[:wind_speed][p.to_s][:value] = 0
-			time_hash[:wind_speed][p.to_s][:r2] = 0.0
+			time_hash[:wind_direction][p] = {} if time_hash[:wind_direction][p].class != {}.class
+			time_hash[:wind_speed][p] = {} if time_hash[:wind_speed][p] != {}.class
+			time_hash[:wind_speed][p].keys.each do |key|
+				time_hash[:wind_speed][p][key] = [] if time_hash[:wind_speed][p][key] != [].class
+			end
+			time_hash[:wind_direction][p].keys.each do |key|
+				time_hash[:wind_direction][p][key] = [] if time_hash[:wind_direction][p][key] != [].class
+			end
+			time_hash["wind_direction"][p][:value] = 0
+			time_hash["wind_direction"][p][:r2] = 0.0
+			time_hash["wind_speed"][p][:value] = 0
+			time_hash["wind_speed"][p][:r2] = 0.0
 		end
 		end
 

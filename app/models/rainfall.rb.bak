@@ -9,7 +9,7 @@ class Rainfall < ActiveRecord::Base
   		begin
   		predictions = Regression.get_value(rain_set.map{|r| r.unix_time - epoch}, rain_set.map{|r| r.intensity}, times)
   		rescue
-  		predictions = {value: periods.map{|x| 0.0},r2: 0.0}
+  		predictions = nil
   		end
   		data = {}
   		periods.each_with_index do |p, i|

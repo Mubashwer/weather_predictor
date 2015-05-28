@@ -116,11 +116,8 @@ class Regression
                  ]
         results.each do |result|
             if result and result[:r2] and (r2.nil? or result[:r2] > r2) and result[:value]
-		if result[:value] != NaN
-			puts "Regression: value = " + result[:r2].to_s + ", r2 = " + result[:value].to_s
-		        r2 = result[:r2]
-		        value = result[:value]
-		end
+                r2 = result[:r2]
+                value = result[:value]
             end
         end 
         return {value: value, r2: r2}

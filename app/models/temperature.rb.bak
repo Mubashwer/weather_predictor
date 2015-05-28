@@ -10,7 +10,6 @@ class Temperature < ActiveRecord::Base
   		predictions = Regression.get_value(temp_set.map{|t| t.unix_time - epoch}, temp_set.map{|t| t.temp}, times)
   		rescue
   		predictions = nil
-		predictions = {value: periods.map{|x| 0.0},r2: 0.0}
   		end
   		data = {}
   		periods.each_with_index do |p, i|

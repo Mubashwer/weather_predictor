@@ -94,7 +94,6 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
             periods.each_with_index do |per|
                 p.data[per.to_s][m]["value"] = [] if p.data[per.to_s][m]["value"].class != Array
                 p.data[per.to_s][m]["value"] << data[m][i][per] if data[m][i] 
-puts p.data
             end
         end
         break if(break_out == true)
