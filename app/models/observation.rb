@@ -56,7 +56,7 @@ class Observation < ActiveRecord::Base
 =end
 
 # The number of records to use in each regression
-RECORDS_PER_DAY = 24*6
+RECORDS_PER_DAY = 3*6 #use data from last 3 hrs only
 REGRESSION_RECORDS = 1*RECORDS_PER_DAY
 
 
@@ -85,13 +85,14 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
           end
           break if(break_out == true)
             records = Observation.where("location_id = ?",loc[:id]).last(REGRESSION_RECORDS)
+            count = records.count
           	# if there are less than 2 records then no regression
-          	if records.count < 2
+          	if count < 2
           		break_out = true
           		break;
           	end
             epoch = records.first.unix_time
-            times_hack = periods.map{|x| 1 + (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i/10.0}
+            times_hack = periods.map{|x| count + (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i/10.0}
             # get data for each location (the data is hash with each period and r2)
             data[m][i] = Temperature.predict(Temperature.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "temp")
             data[m][i] = Rainfall.predict(Rainfall.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "rain")
