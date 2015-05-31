@@ -73,7 +73,7 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
     #times = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i} #use times from the prediction object and adjust for epoch
     
     # presumes time at start of day is 1 second (otherwise the values are too large)
-    times_hack = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - Time.zone.parse(p.data[x.to_s]["time"][8..-1])).to_i + 1}
+    #times_hack = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - Time.zone.parse(p.data[x.to_s]["time"][8..-1])).to_i + 1}
     break_out = false;
     MEASUREMENTS.each do |m|
         data = {}; data[m] = {}
@@ -84,12 +84,14 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
             break;
           end
           break if(break_out == true)
-
+            records = Observation.where("location_id = ?",loc[:id]).last(REGRESSION_RECORDS)
           	# if there are less than 2 records then no regression
-          	if Observation.where("location_id = ?",loc[:id]).last(REGRESSION_RECORDS).count < 2
+          	if records.count < 2
           		break_out = true
           		break;
           	end
+            epoch = records.first.unix_time
+            times_hack = periods.map{|x| 1 + (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i/10.0}
             # get data for each location (the data is hash with each period and r2)
             data[m][i] = Temperature.predict(Temperature.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "temp")
             data[m][i] = Rainfall.predict(Rainfall.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "rain")

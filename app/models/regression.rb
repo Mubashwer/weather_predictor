@@ -28,12 +28,6 @@ class Regression
             # When ss_total, r_squared = Float::NAN, but since ss_total = 0,
             # there is a perfect regression equation equal to 0, hence r2 = 1.0
             return 1.0
-        elsif r_squared < 0.0
-            # Fix rounding due to floating point precision.
-            return 0.0
-        elsif r_squared > 1.0
-            # Fix rounding due to floating point precision.
-            return 1.0
         else
             return r_squared
         end
