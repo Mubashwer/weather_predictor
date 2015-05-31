@@ -1,0 +1,70 @@
+
+Changes from Original Design and Initial Concept.
+* Splitted up controller.
+  In our initial design, as evident in our class and component diagrams, we had
+  only one controller - the WeatherController - which was responsible for all
+  of the fetching of locations/stations, weather data and predictions, and then
+  passing the data to the appropriate view.
+  Although this worked fine, it cluttered up the controller, and from the
+  feedback of our tutors, we decided to split up the controller into several
+  controllers, each responsible for one set of tasks.
+  Currently, our weather predictor rails app has four controllers:
+    DataController - responsible for fetching weather data from a location and
+      fetching locations from a postcode.
+    LocationController - responsible for fetching all locations.
+    PredictionController - responsible for fetching weather predictions.
+    WeatherController - serving as a controller for the homepage HTML view.
+  Now, each controller is given a more specific role in the Rails application.
+  It has made it easier to manage and maintain the code during development; we
+  know which controller needs to be debugged when we come up against an error,
+  and each controller was small enough for us to easily fix.
+* Sourcing our dataset from only the latest 24 hours for predictions.
+  It was initially (during design) thought that our predictions will be
+  performed by performing regressions on the entire dataset stored in the
+  database of our app. This, however, made our predictions very inaccurate, as
+  data long in the past had very little relevance to the weather in the future.
+  This became apparent, when our weather predictions for wind direction always
+  returned east despite the wind blowing approximately north for the past 12
+  hours, because we had accumulated a lot of past data that had the wind
+  blowing east. As a result, we rectified this issue by limiting the dataset
+  used by predictions to the past 24 hours, resulting in much more accurate
+  predictions.
+* Normalising origin unix time to 1 for regressions.
+  The first implementation of our weather predictor saw regressions performed
+  with the unix time of the data sets. However, it became an issue because the
+  unix time representation of recent dates were very large numbers while the
+  data being regressed against (rainfall, temperature, wind speed and wind
+  direction) were relatively small values. It diminished the accuracy of our
+  predictions, due to a combination of rounding errors and lack of precision
+  in floating-point numbers.
+  As a result of this, it was decided to normalise the unix time of the first
+  data set under analysis to 1 and have other data sets' unix time set relative
+  to the first data set when performing a regression. This further improved our
+  predictions.
+
+Difficulties and Troubles Faced in Development
+* Special cases.
+  During development, there were many special cases that were not considered
+  during design - both logical and technical - and had to be thought and
+  decided on during development. For example, should a regression be done on a
+  time series against a data of 0's, the standard method of calculating of r
+  squared would yield infinity. This could only be resolved by adding
+  special-case logic to the originally designed and conceived methods and
+  classes.
+  In more complex cases, there were special cases to one special case, which
+  further complicating the coding, and sometimes affected our initial design.
+  In other scenarios, one special case needed to be handled differently for
+  different situations.
+* Logical errors.
+  Fixing logical errors in our application was, by far, the hardest; logic
+  errors do not indicate what or where in our application has gone wrong.
+  Debugging them would require us to go through almost the entire web
+  application (from model, controller to view) to find the one bug that caused
+  incorrect results. Fortunately, for all the logical errors we found, they
+  have been fixed.
+* Error handling.
+  During design, we did not consider error handling - mostly runtime errors.
+  This included divide by zeros and null data sets. Most of these could be
+  fixed by writing additional special cases, as mentioned above; however, some
+  of these errors must be handled appropriately with begin/rescue (try/catch)
+  block.
