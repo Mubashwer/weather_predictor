@@ -68,3 +68,22 @@ Difficulties and Troubles Faced in Development
   fixed by writing additional special cases, as mentioned above; however, some
   of these errors must be handled appropriately with begin/rescue (try/catch)
   block.
+
+Importance of Design Before Development
+  Design has significantly saved a lot of time and effort required in
+  development. The design indicated to us the structure and interaction of our
+  application, so we knew how implement the web application.
+  For example, with the class diagrams, we knew what classes had to be
+  implemented, and what methods had to be coded in them. The sequence diagram
+  showed how and which classes interacted with each other, hence helping us
+  develop a mutual data format shared between classes and methods.
+  However, I must mention that design (at least in our designs), it did very
+  little help to coding the logic inside our application. For example, in our
+  designs, we mentioned we call a method predict() which calls other methods in
+  other classes, but it doesn't mention how to implement the logic behind
+  predictions or even regressions. Design also doesn't really account for
+  special cases and logical errors. I suppose a design would be best to
+  incorporate to some degree of logic.
+  Personally, I think our design could have been improved to further decrease
+  coupling and increase cohesion (which we have done during development for the
+  controllers, but more could be done).
