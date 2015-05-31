@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   scope '/weather' do
-	get 'locations', to: 'weather#locations', as: :locations, defaults: {format: :json}
-	get 'data/:postcode/:date', constraints: {postcode: /3[0-9]{3}/.freeze}, to: 'weather#data_postcode', defaults: {format: :json}
-	get 'data/:location_id/:date', to: 'weather#data_location_id', constraints: {postcode: /3[0-9]{3}/.freeze}, defaults: {format: :json}
-	get 'prediction/:lat/:long/:period', to: 'weather#prediction', constraints: {lat: /-?\d+(.\d+)?/.freeze, long: /-?\d+(.\d+)?/.freeze},defaults: {format: :json}
-	get 'prediction/:postcode/:period', to: 'weather#prediction', defaults: {format: :json}
+	get 'locations', to: 'location#locations', as: :locations, defaults: {format: :json}
+	get 'data/:postcode/:date', constraints: {postcode: /3[0-9]{3}/.freeze}, to: 'data#data_postcode', defaults: {format: :json}
+	get 'data/:location_id/:date', to: 'data#data_location_id', constraints: {postcode: /3[0-9]{3}/.freeze}, defaults: {format: :json}
+	get 'prediction/:lat/:long/:period', to: 'prediction#prediction', constraints: {lat: /-?\d+(.\d+)?/.freeze, long: /-?\d+(.\d+)?/.freeze},defaults: {format: :json}
+	get 'prediction/:postcode/:period', to: 'prediction#prediction', defaults: {format: :json}
   end
   root 'weather#index'
   # The priority is based upon order of creation: first created -> highest priority.

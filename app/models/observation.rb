@@ -33,7 +33,12 @@ class Observation < ActiveRecord::Base
     values.each_with_index do |v,i|
       numerator += v * inv_distances[i]
     end
-    return numerator.to_f/inv_distances.sum
+    ratio = numerator.to_f/inv_distances.sum
+    if ratio.nan?  # return average if sum of inverse distances are 0
+      return values.inject{ |sum, i| sum + i }.to_f / values.size
+    else 
+      return ratio 
+    end
   end
 =begin
   def self.get_predictions lat, long, period
@@ -54,6 +59,7 @@ class Observation < ActiveRecord::Base
 RECORDS_PER_DAY = 24*6
 REGRESSION_RECORDS = 1*RECORDS_PER_DAY
 
+
 #grady: ADD WIND TO p.data in this or separate function (RESOLVED)
   def self.get_predictions lat, long, period
   
@@ -62,6 +68,7 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
     p.set_current_weather(nearby_locations)
     periods = (10..period.to_i).step(10).to_a # 0 is for current conditions
     #epoch = Observation.first.unix_time + 1
+
 
     #times = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i} #use times from the prediction object and adjust for epoch
     
@@ -94,7 +101,6 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
             periods.each_with_index do |per|
                 p.data[per.to_s][m]["value"] = [] if p.data[per.to_s][m]["value"].class != Array
                 p.data[per.to_s][m]["value"] << data[m][i][per] if data[m][i] 
-puts p.data
             end
         end
         break if(break_out == true)

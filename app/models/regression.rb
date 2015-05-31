@@ -83,7 +83,13 @@ class Regression
 
         model = regress(ln_x_data, y_data, 1)
         r2 = give_r_squared(y_data, find_predicted_values(ln_x_data, model))
-        value = find_predicted_values(x_array.map{|i| Math.log(i)},model)
+        
+        begin 
+            value = find_predicted_values(x_array.map{|i| Math.log(i)},model)
+        rescue Math::DomainError
+            return nil
+        end
+        
         return {value: value, r2: r2} 
     end
 
@@ -99,6 +105,12 @@ class Regression
         model = regress(x_data, ln_y_data, 1)
         r2 = give_r_squared(ln_y_data, find_predicted_values(x_data, model))
         value = find_predicted_values(x_array,model).map{|i| Math.exp(i)}
+
+        # error checking
+        value.each do |v|
+            return nil if v.to_f.nan?
+        end
+
         return {value: value, r2: r2}
     end
 
@@ -116,11 +128,9 @@ class Regression
                  ]
         results.each do |result|
             if result and result[:r2] and (r2.nil? or result[:r2] > r2) and result[:value]
-		if result[:value] != NaN
-			puts "Regression: value = " + result[:r2].to_s + ", r2 = " + result[:value].to_s
-		        r2 = result[:r2]
-		        value = result[:value]
-		end
+					r2 = result[:r2]
+					#result[:value] = result[:value].map{|v| v.to_f.nan? ? 0.0 : v}
+                    value = result[:value]
             end
         end 
         return {value: value, r2: r2}
