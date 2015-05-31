@@ -10,7 +10,7 @@ Harry Pui Lam Wong (harryw1, 637802)
 * Steps to start the app  
  
 bundle install  
-rake db:setup or rake db:reset  
+rake db:reset  
 whenever -i  
 rails s  
 
