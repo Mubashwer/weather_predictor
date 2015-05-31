@@ -18,7 +18,7 @@ Changes from Original Design and Initial Concept.
   It has made it easier to manage and maintain the code during development; we
   know which controller needs to be debugged when we come up against an error,
   and each controller was small enough for us to easily fix.
-* Sourcing our dataset from only the latest 24 hours for predictions.
+* Sourcing our dataset from only the latest 3 hours for predictions.
   It was initially (during design) thought that our predictions will be
   performed by performing regressions on the entire dataset stored in the
   database of our app. This, however, made our predictions very inaccurate, as
@@ -27,7 +27,7 @@ Changes from Original Design and Initial Concept.
   returned east despite the wind blowing approximately north for the past 12
   hours, because we had accumulated a lot of past data that had the wind
   blowing east. As a result, we rectified this issue by limiting the dataset
-  used by predictions to the past 24 hours, resulting in much more accurate
+  used by predictions to the past 3 hours, resulting in much more accurate
   predictions.
 * Normalising origin unix time to 1 for regressions.
   The first implementation of our weather predictor saw regressions performed
