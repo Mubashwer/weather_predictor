@@ -41,15 +41,15 @@ class Wind < ActiveRecord::Base
 			#r2 = ((predicted_x_strength[:r2] + predicted_y_strength[:r2])/2.0).round(2)
 		end
 		periods.each_with_index do |p, i|
-			x_y_sum_strength = predicted_x_strength[:value][i] + predicted_y_strength[:value][i]
+			x_y_sum_strength = predicted_x_strength[:value][i].abs + predicted_y_strength[:value][i].abs
 			
 			time_hash[:wind_direction][p] = combined_x_y[i][:wind_direction]
 			# Each value may have a different r^2 value based on the distribution of distances in the radial plane
 			# Hence it may be worth splitting these values out more.
 			# r2 simply expressed as weighted linear percentage weighted average
-			time_hash[:wind_direction][:r2] = (predicted_x_strength[:r2] * predicted_x_strength[:value][i] / x_y_sum_strength + predicted_y_strength[:r2] * predicted_y_strength[:value][i] / x_y_sum_strength) / 2
+			time_hash[:wind_direction][:r2] = (predicted_x_strength[:r2] * predicted_x_strength[:value][i].abs / x_y_sum_strength + predicted_y_strength[:r2] * predicted_y_strength[:value][i].abs / x_y_sum_strength) / 2
 			time_hash[:wind_speed][p] = combined_x_y[i][:wind_speed]
-			time_hash[:wind_speed][:r2] = (predicted_x_strength[:r2] * predicted_x_strength[:value][i] / x_y_sum_strength + predicted_y_strength[:r2] * predicted_y_strength[:value][i] / x_y_sum_strength) / 2
+			time_hash[:wind_speed][:r2] = (predicted_x_strength[:r2] * predicted_x_strength[:value][i].abs / x_y_sum_strength + predicted_y_strength[:r2] * predicted_y_strength[:value][i].abs / x_y_sum_strength) / 2
 		end
 		rescue
 		puts "Failed normal prediction mode, returning useless regression"

@@ -23,7 +23,5 @@ For predictions, at least two sets of data are needed so please wait for about
 
 Visit localhost:3000 for web interface.
 
-Our API is also hosted at http://128.199.226.9
-
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.

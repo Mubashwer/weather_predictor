@@ -1,6 +1,6 @@
 
 Changes from Original Design and Initial Concept.
-* Splitted up controller.
+* Split up controller.
   In our initial design, as evident in our class and component diagrams, we had
   only one controller - the WeatherController - which was responsible for all
   of the fetching of locations/stations, weather data and predictions, and then
@@ -41,6 +41,57 @@ Changes from Original Design and Initial Concept.
   data set under analysis to 1 and have other data sets' unix time set relative
   to the first data set when performing a regression. This further improved our
   predictions.
+
+* Minor Changes to Design
+ - Changed name of "Fio_parser.get_next_key" to "Fio_parser.get_api_key" in 
+    order to reflect a more general purpose the function provides.
+ - Added Location.NEAR_DISTANCE, this defines what is meant by a 
+    "nearby station" in metres.
+ - Added Location.get_locs_json, this returns a json representation of the given
+    locations, including all stored measurements for that location on the given date
+
+ A number of changes were made in order to calculate the distances between two long/lat pairs using the Haversine formula.
+ - Added Location.RAD_PER_DEG, a precalculated constant for the number of 
+    radians in a degree
+ - Added Location.Rmiles, the radius of earth in miles
+ - Added Location.Rkm, the radius of earth in kilometres
+ - Added Location.Rmeters, the radius of the earth in metres
+
+ - Added Location.distances, stores distance pairs to save on computation.
+
+ - Added Location.haversine_distance, calculates the haversine distance between 
+   two points
+ - Added Location.find_sorted_weather_stations, returns a list of nearby 
+   locations sorted by nearest to given lat/long pair
+ - Added Location.get_nearest_locs, gets the nearest locations to the given 
+   lat/long pair
+ - Added Location.test_haversine, unit test
+ - Added Location.get_lat_long, returns the lat/long pair for a given postcode.
+
+ - Added Observation.MEASUREMENTS, gives the set of measurements to try to 
+   record data for.
+ - Added Observation.aggregate, joins the set of all nearby location prediction 
+   data together to form a single prediction for the point at the origin of all 
+   the distances
+ - Added Observation.RECORDS_PER_DAY, gives the number of records to predict on 
+   for a full day, this was cut down to 3 hours only, the value does not 
+   currently represent the number of records per day, however in the interest of 
+   a simple integer constant, rather than including a float multiplier and 
+   integer conversion, this has been left as is.
+ - Changed Observation.get_data to Observation.get_measurements in the interest 
+   of a more descriptive function name
+ - Added Prediction.set_current_weather, sets the prediction for "0" time from 
+   now to the latest measurement
+ - Removed Prediction.get_data, this seemed redundant.
+
+ - Modified interface for Rain.Predict, Temperature.predict and Wind.predict, to 
+   include the names for each of the requested time points.
+
+ - Modified interface for Wind.Predict, m was added, the prediction type being 
+   aimed for, this basically increases coupling in the interest of cleaner 
+   interface and faster performance, it, and the storage of the wind values 
+   calculated, could be removed, however we thought performance and code 
+   generality was more important in this case than the added coupling.
 
 Difficulties and Troubles Faced in Development
 * Special cases.
