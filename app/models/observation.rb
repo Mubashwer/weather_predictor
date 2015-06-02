@@ -40,40 +40,20 @@ class Observation < ActiveRecord::Base
       return ratio 
     end
   end
-=begin
-  def self.get_predictions lat, long, period
-    nearby_locations = Location.get_nearest_locs(lat, long)
-    p = Prediction.new(period.to_i)
-    d = {}
-    periods = (0..period.to_i/10).map{|x| x*10}
-    epoch = Observation.first.unix_time + 1
-    times = periods.map{|period| Time.zone.now.to_i + period.minutes - epoch}
-    nearby_locations[0..1].each do |nearby_location|
-        d[nearby_location[:loc].station_id] = Wind.predict(Wind.joins(:observation).where("observations.location_id = ?",nearby_location[:id]),periods)
-    end
-    return d
-  end
-=end
 
 # The number of records to use in each regression
 RECORDS_PER_DAY = 3*6 #use data from last 3 hrs only
 REGRESSION_RECORDS = 1*RECORDS_PER_DAY
 
 
-#grady: ADD WIND TO p.data in this or separate function (RESOLVED)
+# Get predictions for a particular lat/long pair for a certain time from now.
   def self.get_predictions lat, long, period
   
     nearby_locations = Location.get_nearest_locs(lat, long)
     p = Prediction.new(period.to_i) #check initialize of Prediction
     p.set_current_weather(nearby_locations)
     periods = (10..period.to_i).step(10).to_a # 0 is for current conditions
-    #epoch = Observation.first.unix_time + 1
-
-
-    #times = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i} #use times from the prediction object and adjust for epoch
     
-    # presumes time at start of day is 1 second (otherwise the values are too large)
-    #times_hack = periods.map{|x| (Time.zone.parse(p.data[x.to_s]["time"]) - Time.zone.parse(p.data[x.to_s]["time"][8..-1])).to_i + 1}
     break_out = false;
     MEASUREMENTS.each do |m|
         data = {}; data[m] = {}
@@ -92,6 +72,7 @@ REGRESSION_RECORDS = 1*RECORDS_PER_DAY
           		break;
           	end
             epoch = records.first.unix_time
+			# presumes time at start of day is 1 second (otherwise the values are too large)
             times_hack = periods.map{|x| count + (Time.zone.parse(p.data[x.to_s]["time"]) - epoch).to_i/10.0}
             # get data for each location (the data is hash with each period and r2)
             data[m][i] = Temperature.predict(Temperature.joins(:observation).where("observations.location_id = ?",loc[:id]).last(REGRESSION_RECORDS), times_hack, periods) if(m == "temp")

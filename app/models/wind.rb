@@ -4,7 +4,7 @@ class Wind < ActiveRecord::Base
   attr_accessor :saved
   @@saved = nil
 
-  # Grabbed from Stack Overflow ()
+  # Grabbed from Stack Overflow (though very similar to code used in project 2)
   def self.bearing_to_cardinal bearing
     val = (bearing/22.5).round
     arr = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
@@ -21,7 +21,6 @@ class Wind < ActiveRecord::Base
 	wind_prediction_hash = {}
 	time_hash = {}
 	if wind_set
-		#wind_set = wind_set.map{|wind| wind.wind}
 		x_strength = wind_set.map{|wind| wind.speed*Math.sin(-((wind.bearing + 90) % 360)*Math::PI / 180)}
 		y_strength = wind_set.map{|wind| wind.speed*Math.cos(-((wind.bearing + 90) % 360)*Math::PI / 180)}
 		epoch = wind_set.first.unix_time + 1
@@ -31,14 +30,11 @@ class Wind < ActiveRecord::Base
 		predicted_x_strength = Regression.get_value(wind_set.map{|wind| wind.unix_time - epoch}, x_strength, times)
 		predicted_y_strength = Regression.get_value(wind_set.map{|wind| wind.unix_time - epoch}, y_strength, times)
 		combined_x_y = times.each_with_index.map do |time, i|
-			# I don't think we should do bearing_to_cardinal until after our aggregation.
-			#wind_direction = Wind.bearing_to_cardinal(-Math.atan2(predicted_x_strength[:value][i], predicted_y_strength[:value][i]) + 90)
 			wind_direction = ((-Math.atan2(predicted_x_strength[:value][i], predicted_y_strength[:value][i])*Math::PI*180) - 90 + 360) % 360
 			
 			wind_speed = Math.sqrt((predicted_x_strength[:value][i]**2) + (predicted_y_strength[:value][i]**2)).round(2)
 			# Map to the hash.
 			{wind_direction: wind_direction, wind_speed: wind_speed}
-			#r2 = ((predicted_x_strength[:r2] + predicted_y_strength[:r2])/2.0).round(2)
 		end
 		periods.each_with_index do |p, i|
 			x_y_sum_strength = predicted_x_strength[:value][i].abs + predicted_y_strength[:value][i].abs
